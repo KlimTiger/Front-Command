@@ -12,13 +12,23 @@ func add_soldier(soldier) -> void:
 	if soldiers.has(soldier):
 		return
 	soldiers.append(soldier)
-	unit_state.strength = soldiers.size()
+	sync_strength_from_soldiers()
 
 func remove_soldier(soldier) -> void:
 	if soldier == null:
 		return
 	soldiers.erase(soldier)
-	unit_state.strength = soldiers.size()
+	sync_strength_from_soldiers()
+
+func get_alive_soldier_count() -> int:
+	var count := 0
+	for soldier in soldiers:
+		if soldier.is_alive():
+			count += 1
+	return count
+
+func sync_strength_from_soldiers() -> void:
+	unit_state.set_strength(get_alive_soldier_count())
 
 func get_tree_lines(depth: int = 0) -> Array[String]:
 	var lines := super.get_tree_lines(depth)

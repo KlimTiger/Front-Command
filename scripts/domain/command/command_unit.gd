@@ -2,7 +2,7 @@ class_name CommandUnit
 extends RefCounted
 
 const UnitStateScript = preload("res://scripts/domain/state/unit_state.gd")
-const EventLogScript = preload("res://scripts/domain/events/event_log.gd")
+const EventLogScript = preload("res://scripts/core/event_log.gd")
 const OrderScript = preload("res://scripts/domain/orders/order.gd")
 const ReportScript = preload("res://scripts/domain/reports/report.gd")
 
@@ -151,7 +151,7 @@ func send_report(
 	metadata: Dictionary = {}
 ):
 	var parent_unit = get_parent_unit()
-	var destination_id := parent_unit.id if parent_unit != null else ""
+	var destination_id: String = parent_unit.id if parent_unit != null else ""
 	var report = ReportScript.create(report_type, id, destination_id, message, severity, related_order_id, metadata)
 	emit_signal("report_created", report)
 	EventLogScript.record_global(EventLogScript.Type.REPORT_CREATED, id, "%s created report %s" % [display_name, report.id], {"report_id": report.id, "type": ReportScript.type_to_string(report.report_type)})

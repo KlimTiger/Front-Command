@@ -12,7 +12,10 @@ enum Type {
 	REPORT_RECEIVED,
 	UNIT_STATE_CHANGED,
 	UNIT_DESTROYED,
-	BATTLE_CONTEXT_CREATED
+	BATTLE_CONTEXT_CREATED,
+	UNIT_MOVED,
+	STRATEGIC_CONTACT,
+	GAME_TICK
 }
 
 static var current = null
@@ -77,5 +80,11 @@ static func type_to_string(value: Type) -> String:
 			return "UnitDestroyed"
 		Type.BATTLE_CONTEXT_CREATED:
 			return "BattleContextCreated"
+		Type.UNIT_MOVED:
+			return "UnitMoved"
+		Type.STRATEGIC_CONTACT:
+			return "StrategicContact"
+		Type.GAME_TICK:
+			return "GameTick"
 		_:
 			return "UnknownEvent"

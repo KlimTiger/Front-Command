@@ -24,11 +24,14 @@ static func create(
 	state.combat_effectiveness = clampf(new_combat_effectiveness, 0.0, 1.0)
 	return state
 
-func apply_losses(losses: int) -> void:
-	var old_strength := strength
-	strength = max(strength - max(losses, 0), 0)
-	_emit_if_changed("strength", old_strength, strength)
+func set_strength(value: int) -> void:
+	var old_value := strength
+	strength = max(value, 0)
+	_emit_if_changed("strength", old_value, strength)
 	_recalculate_combat_effectiveness()
+
+func apply_losses(losses: int) -> void:
+	set_strength(strength - max(losses, 0))
 
 func set_ammo(value: float) -> void:
 	var old_value := ammo

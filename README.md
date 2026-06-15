@@ -9,12 +9,13 @@ Front Command — a WWII command-focused strategy game featuring a unified strat
 ![Engine](https://img.shields.io/badge/engine-Godot%204-blue)
 ![Version](https://img.shields.io/badge/version-0.1.0-lightgrey)
 
-![Overall Progress](https://progress-bar.xyz/15/?title=Project%20Progress)
+![Overall Progress](https://progress-bar.xyz/28/?title=Project%20Progress)
 
 | Stage | Status |
 |---------|---------|
-| [Foundation](docs/FOUNDATION_PROTOTYPE.md) | 🟩 Complete |
-| [Pre-Alpha](TASKS.md) | 🟨 In Progress |
+| [Foundation](docs/FOUNDATION_PROTOTYPE.md) | 🟩 Complete (Stage 0 + 0.5) |
+| [Strategic Map](docs/FOUNDATION_PROTOTYPE.md#stage-1-strategic-layer) | 🟨 Prototype ready |
+| [Pre-Alpha](docs/TASKS.md) | 🟨 In Progress |
 | Alpha | ⬜ Planned |
 | Beta | ⬜ Planned |
 | Release | ⬜ Planned |
@@ -23,8 +24,8 @@ Front Command — a WWII command-focused strategy game featuring a unified strat
 
 ## Quick Links
 
-- 📖 [Vision](GAME_VISION.md)
-- 🗺️ [Roadmap](TASKS.md)
+- 📖 [Vision](docs/GAME_VISION.md)
+- 🗺️ [Roadmap](docs/TASKS.md)
 - 🏗️ [Foundation Prototype](docs/FOUNDATION_PROTOTYPE.md)
 
 
@@ -52,10 +53,14 @@ Unlike traditional RTS games, the player acts as a Front Headquarters rather tha
 
 Currently implemented:
 
-* Command hierarchy
-* Orders
-* Reports
-* Delegation system foundation
+* Command hierarchy (Front → Squad)
+* Soldiers as executors inside Squad
+* UnitState (strength, ammo, fatigue, morale, combat_effectiveness)
+* Orders with validated lifecycle (DRAFT → ACTIVE → DELEGATED → COMPLETED / FAILED / CANCELLED)
+* Reports and delegation
+* Centralized EventLog
+* BattleContext stub for strategic/tactical linkage
+* Strategic layer: CellMap, StrategicUnit, GameTime, MovementSystem, ContactSystem
 
 Planned:
 

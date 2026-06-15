@@ -168,7 +168,7 @@ Front
  │   │   ├─ Regiment
  │   │   │   ├─ Company
  │   │   │   │   ├─ Squad
- │   │   │   │   │   ├─ Soldier
+ │   │   │   │   │   └─ Soldier[] (исполнители, не CommandUnit)
 ```
 
 Игрок может отдавать приказы на любом уровне.

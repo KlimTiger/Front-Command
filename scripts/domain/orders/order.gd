@@ -1,7 +1,7 @@
 class_name Order
 extends RefCounted
 
-const EventLogScript = preload("res://scripts/domain/events/event_log.gd")
+const EventLogScript = preload("res://scripts/core/event_log.gd")
 
 enum Type {
 	HOLD,
