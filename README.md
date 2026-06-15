@@ -4,6 +4,13 @@ Front Command — a WWII command-focused strategy game featuring a unified strat
 
 ## Project Status
 
+
+![Status](https://img.shields.io/badge/status-pre--alpha-orange)
+![Engine](https://img.shields.io/badge/engine-Godot%204-blue)
+![Version](https://img.shields.io/badge/version-0.1.0-lightgrey)
+
+![Overall Progress](https://progress-bar.xyz/15/?title=Project%20Progress)
+
 | Stage | Status |
 |---------|---------|
 | [Foundation](docs/FOUNDATION_PROTOTYPE.md) | 🟩 Complete |
@@ -19,20 +26,6 @@ Front Command — a WWII command-focused strategy game featuring a unified strat
 - 📖 [Vision](GAME_VISION.md)
 - 🗺️ [Roadmap](TASKS.md)
 - 🏗️ [Foundation Prototype](docs/FOUNDATION_PROTOTYPE.md)
-
-
-
-
-## Development Status
-
-![Status](https://img.shields.io/badge/status-pre--alpha-orange)
-![Engine](https://img.shields.io/badge/engine-Godot%204-blue)
-![Version](https://img.shields.io/badge/version-0.1.0-lightgrey)
-
-![Overall Progress](https://progress-bar.xyz/15/?title=Project%20Progress)
-
-**Current Focus:** Foundation Architecture & Command System
-
 
 
 
