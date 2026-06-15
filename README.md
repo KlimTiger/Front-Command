@@ -1,6 +1,29 @@
 # Front-Command
 Front Command — a WWII command-focused strategy game featuring a unified strategic and tactical layer, hierarchical command structure, AI delegation, and realistic battlefield decision-making.
 
+
+## Project Status
+
+| Stage | Status |
+|---------|---------|
+| [Foundation](docs/FOUNDATION_PROTOTYPE.md) | 🟩 Complete |
+| [Pre-Alpha](TASKS.md) | 🟨 In Progress |
+| Alpha | ⬜ Planned |
+| Beta | ⬜ Planned |
+| Release | ⬜ Planned |
+
+---
+
+## Quick Links
+
+- 📖 [Vision](GAME_VISION.md)
+- 🗺️ [Roadmap](TASKS.md)
+- 🏗️ [Foundation Prototype](docs/FOUNDATION_PROTOTYPE.md)
+
+
+
+
+
 ## Navigation
 
 📖 [Vision](GAME_VISION.md) • 🗺️ [Roadmap](TASKS.md) • 🏗️ [Foundation](docs/FOUNDATION_PROTOTYPE.md)
