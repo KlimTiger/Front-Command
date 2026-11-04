@@ -1,61 +1,64 @@
-# TASKS.md
+# Front Command - Roadmap
 
-# Фронт — дорожная карта разработки
+## Current Priority
 
-## Этап 0 — Фундамент проекта
+Stage 1 - Strategic Map Prototype.
 
-**Цель:** создать базовую архитектуру игры.
+Stage 0 and Stage 0.5 are complete. The project now has the data foundation, command hierarchy, order lifecycle, reports, EventLog, UnitState, and BattleContext bridge. The current work is still strategic-layer foundation, not tactical combat.
 
-### Цепочка командования
+Do not implement yet:
 
-- [x] Создать класс Front
-- [x] Создать класс Army
-- [x] Создать класс Division
-- [x] Создать класс Regiment
-- [x] Создать класс Company
-- [x] Создать класс Squad
-- [x] Создать класс Soldier
+- shooting;
+- tactical battle simulation;
+- tanks;
+- artillery;
+- UI-heavy gameplay;
+- historical campaign content.
 
-### Приказы
+## Stage 0 - Project Foundation
 
-- [x] Создать базовый класс Order
-- [x] Реализовать типы приказов:
-  - [x] Атака
-  - [x] Оборона
-  - [x] Удержание
-  - [x] Разведка
-  - [x] Отступление
-  - [x] Штурм
+Goal: create the basic game architecture.
 
-### Рапорты
+### Command Hierarchy
 
-- [x] Создать базовый класс Report
-- [x] Реализовать систему передачи рапортов
-- [x] Реализовать очередь рапортов
+- [x] Front
+- [x] Army
+- [x] Division
+- [x] Regiment
+- [x] Company
+- [x] Squad
+- [x] Soldier as executor data inside Squad
 
-### Цепочка управления
+### Orders
 
-- [x] Делегирование приказов вниз
-- [x] Передача рапортов вверх
-- [x] Отслеживание состояния подразделений
+- [x] Base Order object
+- [x] Order types: HOLD, DEFEND, ATTACK, RECON, WITHDRAW, ENTRENCH, ASSAULT, SUPPORT, RESUPPLY
+- [x] Delegation downward through CommandUnit chain
 
-### Тестирование
+### Reports
 
-- [x] Создать тестовую сцену без графики
-- [x] Проверить выполнение приказов
-- [x] Проверить отправку рапортов
+- [x] Base Report object
+- [x] Report flow upward through CommandUnit chain
+- [x] Report types for contact, ammo, losses, reinforcement, completion/failure, status, supply
 
----
+### Test Scene
 
-## Этап 0.5 — Укрепление фундамента
+- [x] No-graphics test scene
+- [x] Command tree demo
+- [x] Order delegation demo
+- [x] Report flow demo
 
-**Цель:** подготовить архитектуру к стратегической и тактической картам, ИИ и снабжению.
+## Stage 0.5 - Foundation Hardening
 
-### Архитектура
+Goal: prepare architecture for strategic map, tactical map, AI, supply, and reports.
 
-- [x] Soldier не наследуется от CommandUnit; солдаты хранятся внутри Squad
-- [x] Создать отдельный объект UnitState
-- [x] Добавить заготовку BattleContext
+### Architecture
+
+- [x] Soldier no longer inherits CommandUnit
+- [x] Squad owns `soldiers: Array`
+- [x] UnitState object created
+- [x] BattleContext bridge created
+- [x] Central EventLog created
 
 ### UnitState
 
@@ -67,289 +70,194 @@
 
 ### Order Lifecycle
 
-- [x] Проверка переходов DRAFT → ACTIVE → DELEGATED → COMPLETED
-- [x] Поддержка FAILED и CANCELLED
-- [x] История статусов приказа
+- [x] DRAFT -> ACTIVE
+- [x] ACTIVE -> DELEGATED
+- [x] ACTIVE/DELEGATED -> COMPLETED
+- [x] ACTIVE/DELEGATED -> FAILED
+- [x] DRAFT/ACTIVE/DELEGATED -> CANCELLED
+- [x] terminal states cannot transition further
+- [x] status history recorded
+
+### EventLog
+
+- [x] OrderIssued
+- [x] OrderAccepted
+- [x] OrderDelegated
+- [x] OrderCompleted
+- [x] OrderFailed
+- [x] OrderCancelled
+- [x] ReportCreated
+- [x] ReportReceived
+- [x] UnitStateChanged
+- [x] UnitDestroyed
+- [x] BattleContextCreated
+- [x] UnitMoved
+- [x] StrategicContact
+- [x] GameTick
+
+## Stage 1 - Strategic Map Prototype
+
+Goal: create the first working strategic layer. This layer remains data-first and has no graphics requirement.
+
+### World
+
+- [x] CellMap grid
+- [x] Cell data
+- [x] Terrain types
+- [x] terrain movement cost
+- [x] terrain supply modifier placeholder
+- [x] GameTime tick clock
+- [x] pause flag
+- [x] time scale
+
+### Strategic Units
+
+- [x] StrategicUnit wrapper that references CommandUnit
+- [x] faction: SOVIET / GERMAN
+- [x] position and destination
+- [x] movement state
+- [x] movement points and speed
+
+### Movement
+
+- [x] MovementSystem
+- [x] cell-to-cell movement
+- [x] terrain movement cost
+- [ ] pathfinding beyond simple direct stepping
+- [ ] blocked cell rules
+- [ ] stacking rules
+
+### Contact
+
+- [x] ContactSystem
+- [x] enemy contact detection
+- [x] StrategicContact event
+- [x] BattleContext creation from contact
+- [x] strategic snapshot in BattleContext
+- [ ] strategic report sent upward when contact occurs
+- [ ] contact report includes enemy, location, terrain, and battle_context_id
+
+### Strategic Orders
 
-### Event Log
+- [x] temporary destination assignment through StrategicUnit
+- [ ] strategic movement order object/action
+- [ ] connect command Order metadata to StrategicUnit destination
+- [ ] report order completion/failure on strategic movement
+
+### Stage 1 Next Steps
+
+1. Add strategic reports on contact through the command chain.
+2. Add a StrategicOrderResolver that applies movement orders to StrategicUnit.
+3. Add basic map occupancy/stacking rules.
+4. Add a simple strategic report summary for Front HQ.
+5. Only then prepare the handoff into Stage 2 tactical prototype.
+
+## Stage 2 - Tactical Map Prototype
+
+Goal: create the first no-frills tactical layer using the same data. Do not start combat before the handoff is clean.
+
+### Before Tactical Combat
+
+- [ ] TacticalBattleContext reader
+- [ ] tactical setup from BattleContext
+- [ ] create tactical participants from existing CommandUnit/Soldier data
+- [ ] return result into UnitState
+
+### Tactical Map
+
+- [ ] free-position 2D map
+- [ ] forests
+- [ ] roads
+- [ ] buildings
+- [ ] trenches
+- [ ] fortifications
 
-- [x] Централизованный EventLog
-- [x] OrderIssued / OrderDelegated / ReportReceived / UnitDestroyed
-- [x] Прочие события приказов, рапортов и состояния
+### Tactical Units
 
-### Тестирование
+- [ ] companies
+- [ ] squads
+- [ ] soldiers as executors
+- [ ] no independent copies of campaign units
 
-- [x] Демо жизненного цикла приказов
-- [x] Демо UnitState и UnitDestroyed
-- [x] Демо BattleContext
+### Combat Later
 
----
+- [ ] spotting
+- [ ] shooting
+- [ ] ammo spending
+- [ ] casualties
+- [ ] wounded
 
-## Этап 1 — Прототип стратегической карты
+## Stage 3 - Strategic/Tactical Link
 
-**Цель:** создать первую работающую стратегическую карту.
+Goal: connect both maps into one campaign data flow.
 
-### Мир
+- [ ] create battle from strategic contact
+- [ ] load tactical context
+- [ ] pause strategic time during tactical battle
+- [ ] apply tactical result to UnitState
+- [ ] return losses, ammo, fatigue, morale, experience
+- [ ] verify no duplicated unit data
 
-- [x] Клеточная карта (CellMap)
-- [x] Типы местности
-- [x] Система времени (GameTime, tick)
-- [x] Пауза (GameTime.paused)
-- [x] Ускорение времени (GameTime.time_scale)
+## Stage 4 - AI Commanders
 
-### Подразделения
+Goal: commanders reason through orders, reports, and state.
 
-- [x] Размещение полков на карте (StrategicUnit)
-- [x] Перемещение полков (MovementSystem)
-- [x] Заготовка под снабжение (Cell.supply_modifier)
+- [ ] evaluate threats
+- [ ] split parent orders into tasks
+- [ ] allocate subordinates
+- [ ] keep reserves
+- [ ] request reinforcement
+- [ ] report losses/contact/ammo
 
-### Столкновения
+## Stage 5 - Delegation and Player Intervention
 
-- [x] Обнаружение контакта с противником (ContactSystem)
-- [x] Создание события боя (StrategicContact + BattleContext)
-- [ ] Передача данных в тактический бой
+Goal: implement the main game feature.
 
-### Командование
+- [ ] AI_DELEGATED control mode behavior
+- [ ] PLAYER_DIRECT control mode behavior
+- [ ] PLAYER_ASSISTED control mode behavior
+- [ ] player override of orders
+- [ ] return control to AI
 
-- [x] Стратегические приказы (destination через StrategicUnit)
-- [ ] Делегирование вниз на карте
-- [ ] Стратегические рапорты при контакте
+## Stage 6 - Moscow Defense Campaign
 
----
+Goal: first campaign after the systems can support it.
 
-## Этап 2 — Прототип тактической карты
+- [ ] campaign map
+- [ ] historical initial deployment
+- [ ] Stavka orders
+- [ ] reinforcements
+- [ ] victory conditions
 
-**Цель:** создать первый играбельный бой.
+## Stage 7 - Advanced Combat Systems
 
-### Поле боя
+- [ ] artillery units
+- [ ] tanks
+- [ ] anti-tank weapons
+- [ ] reconnaissance/fog of war
 
-- [ ] Тактическая карта
-- [ ] Леса
-- [ ] Дороги
-- [ ] Дома
-- [ ] Окопы
-- [ ] Укрепления
+## Stage 8 - Supply
 
-### Подразделения
+- [ ] ammunition
+- [ ] fuel
+- [ ] supply lines
+- [ ] replacements
+- [ ] equipment replacement
 
-- [ ] Создание рот
-- [ ] Создание отделений
-- [ ] Создание солдат
+## Stage 9 - Report System Depth
 
-### Управление
+- [ ] enemy contact reports
+- [ ] low ammo reports
+- [ ] heavy losses reports
+- [ ] objective completed reports
+- [ ] support requested reports
+- [ ] player response options
 
-- [ ] Выделение отделения
-- [ ] Перемещение отделения
-- [ ] Удержание позиции
-- [ ] Занятие окопов
+## Stage 10 - Full Version
 
-### Бой
-
-- [ ] Обнаружение противника
-- [ ] Стрельба
-- [ ] Боеприпасы
-- [ ] Потери
-- [ ] Ранения
-
----
-
-## Этап 3 — Связь стратегической и тактической карт
-
-**Цель:** объединить обе карты в единую систему.
-
-### Передача боя
-
-- [ ] Создание боя на стратегической карте
-- [ ] Загрузка тактической карты
-- [ ] Возврат результатов боя
-
-### Сохранение последствий
-
-- [ ] Возврат потерь
-- [ ] Возврат опыта
-- [ ] Возврат расхода боеприпасов
-- [ ] Возврат усталости
-
-### Проверка
-
-- [ ] Исключить дублирование данных
-- [ ] Проверить единство кампании
-
----
-
-## Этап 4 — Тактический ИИ
-
-**Цель:** создать адекватное поведение подразделений.
-
-### Приказы ИИ
-
-- [ ] Оборона района
-- [ ] Атака цели
-- [ ] Разведка
-- [ ] Отступление
-- [ ] Штурм
-
-### Поведение
-
-- [ ] Использование укрытий
-- [ ] Использование окопов
-- [ ] Создание резерва
-- [ ] Обход флангов
-
-### Рапорты
-
-- [ ] Запрос подкреплений
-- [ ] Доклад о потерях
-- [ ] Доклад о противнике
-
----
-
-## Этап 5 — Делегирование управления
-
-**Цель:** реализовать главную фишку проекта.
-
-### Делегирование
-
-- [ ] Назначение задач ИИ-командирам
-- [ ] Создание подзадач
-- [ ] Распределение сил
-
-### Вмешательство игрока
-
-- [ ] Взятие управления на себя
-- [ ] Возврат управления ИИ
-- [ ] Переопределение приказов
-
-### Логика командиров
-
-- [ ] Оценка угроз
-- [ ] Распределение подразделений
-- [ ] Управление резервами
-
----
-
-## Этап 6 — Кампания «Оборона Москвы»
-
-**Цель:** первая полноценная кампания.
-
-### Карта
-
-- [ ] Стратегическая карта кампании
-- [ ] Историческое расположение частей
-- [ ] Начальные задачи
-
-### Сценарии
-
-- [ ] Оборонительные бои
-- [ ] Контратаки
-- [ ] Подход резервов
-
-### Условия победы
-
-- [ ] Удержание рубежей
-- [ ] Срыв наступления противника
-- [ ] Сохранение боеспособности войск
-
----
-
-## Этап 7 — Продвинутые системы боя
-
-### Артиллерия
-
-- [ ] Артиллерийские подразделения
-- [ ] Огневые задачи
-- [ ] Артподготовка
-
-### Танки
-
-- [ ] Танковые подразделения
-- [ ] Броня
-- [ ] Противотанковые средства
-
-### Разведка
-
-- [ ] Туман войны
-- [ ] Наблюдение
-- [ ] Разведывательные данные
-
----
-
-## Этап 8 — Снабжение
-
-### Логистика
-
-- [ ] Боеприпасы
-- [ ] Топливо
-- [ ] Линии снабжения
-
-### Пополнения
-
-- [ ] Подкрепления
-- [ ] Замена техники
-- [ ] Пополнение личного состава
-
----
-
-## Этап 9 — Система рапортов
-
-**Цель:** создать ощущение реального штаба.
-
-### Рапорты
-
-- [ ] Обнаружен противник
-- [ ] Нехватка боеприпасов
-- [ ] Тяжёлые потери
-- [ ] Задача выполнена
-- [ ] Требуется помощь
-
-### Решения игрока
-
-- [ ] Разрешить отход
-- [ ] Запретить отход
-- [ ] Отправить резерв
-- [ ] Запросить артиллерию
-
----
-
-## Этап 10 — Полная версия
-
-### Кампании
-
-- [ ] Оборона Киева
-- [ ] Оборона Москвы
-- [ ] Блокада Ленинграда
-- [ ] Сталинград
-- [ ] Курская дуга
-- [ ] Берлинская операция
-
-### Полировка
-
-- [ ] Интерфейс
-- [ ] Звуки
-- [ ] Сохранения
-- [ ] Оптимизация
-- [ ] Баланс
-
----
-
-# Текущий приоритет
-
-## Сейчас разрабатывается
-
-**Этап 1 — Прототип стратегической карты** (базовый каркас готов)
-
-Этапы 0 и 0.5 завершены. Реализованы CellMap, StrategicUnit, GameTime, MovementSystem, ContactSystem и создание BattleContext при контакте.
-
-Следующие шаги этапа 1:
-
-- рапорты при контакте через цепочку командования;
-- делегирование приказов на стратегическом слое;
-- подготовка перехода в тактический бой (Этап 2).
-
-До тактического боя запрещено заниматься:
-
-- стрельбой;
-- танками;
-- артиллерией;
-- историческими кампаниями.
-
+- [ ] campaigns beyond Moscow
+- [ ] save/load
+- [ ] UI polish
+- [ ] sound
+- [ ] optimization
+- [ ] balancing
